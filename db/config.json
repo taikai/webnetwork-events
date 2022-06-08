@@ -1,0 +1,8 @@
+{
+  "dialectOptions": {
+    "ssl": {
+      "required": true,
+      "rejectUnauthorized": false
+    }
+  }
+}
