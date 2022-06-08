@@ -1,0 +1,31 @@
+{
+  "name": "webnetwork-events",
+  "version": "0.0.1",
+  "description": "microservice that reacts to webnetwork events",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "update-models": "node tools/update-models.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cma ./actions/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moshmage/webnetwork-events.git"
+  },
+  "author": "moshmage@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moshmage/webnetwork-events/issues"
+  },
+  "homepage": "https://github.com/moshmage/webnetwork-events#readme",
+  "dependencies": {
+    "@taikai/dappkit": "^2.0.0",
+    "cron-module-actions": "^0.1.3",
+    "dotenv": "^16.0.1",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.20.1",
+    "sequelize-auto": "^0.8.8"
+  }
+}

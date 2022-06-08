@@ -1,0 +1,8 @@
+.idea/
+dev/
+node_modules/
+*.env
+!.env.example
+
+# ignore models inside database folder so we can keep the truth on the database
+db/*.cjs
