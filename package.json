@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/moshmage/webnetwork-events#readme",
   "dependencies": {
+    "@taikai/dappkit": "^2.0.0",
     "cron-module-actions": "^0.1.1",
     "dotenv": "^16.0.1",
     "pg": "^8.7.3",
