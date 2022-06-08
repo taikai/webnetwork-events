@@ -3,8 +3,8 @@ microservice that reacts to webnetwork events
 
 ## Developing
 Install dependencies and pull the postgres models from the database 
-- don't forget to create a .env file following [.env.example](./.env.example))
-- don't forget to pull new modules if you change branch locally
+- don't forget to create a .env file following [.env.example](./.env.example)
+- don't forget to pull new models if you change branch locally
 
 
 ```shell
