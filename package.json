@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "update-models": "node tools/update-models.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
