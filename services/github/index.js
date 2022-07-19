@@ -21,8 +21,7 @@ export async function issueDetails(repo, owner, issueId) {
     issueId: +issueId,
   });
 }
-//'LA_kwDOHlO0IM7_S3da'
-//'I_kwDOHlO0IM5N-aK2'
+
 export async function issueRemoveLabel(issueId, labelId) {
   await githubAPI(IssueQueries.RemoveLabel, {
     issueId,

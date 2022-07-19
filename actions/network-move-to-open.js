@@ -82,5 +82,3 @@ export async function action() {
     await loadIssues(network, contract);
   }
 }
-
-action();
