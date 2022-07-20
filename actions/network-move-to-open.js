@@ -2,10 +2,7 @@ import { subMilliseconds } from "date-fns";
 import { Op } from "sequelize";
 import db from "../db/index.js";
 import DAOService from "../services/dao-service.js";
-import GHService, {
-  issueDetails,
-  issueRemoveLabel,
-} from "../services/github/index.js";
+import GHService from "../services/github/index.js";
 import { error, info } from "../utils/logger-handler.js";
 import { ghPathSplit } from "../utils/string.js";
 
@@ -49,8 +46,12 @@ async function loadIssues(network, contract) {
       )?.id;
 
       if (labelId) {
-        const ghIssue = await issueDetails(repo, owner, +issue.githubId);
-        await issueRemoveLabel(ghIssue.repository.issue.id, labelId);
+        const ghIssue = await GHService.issueDetails(
+          repo,
+          owner,
+          +issue.githubId
+        );
+        await GHService.issueRemoveLabel(ghIssue.repository.issue.id, labelId);
       }
 
       issue.state = "open";

@@ -28,7 +28,7 @@ function importHtml(htmlPathName) {
   });
 }
 
-export default async function generateBountyCards(issue, repoName = "") {
+export default async function generateBountyCards(issue) {
   if (!issue) throw new Error("issue is required");
 
   const background = await image2base64("bg-bounty-card.png");
@@ -53,7 +53,6 @@ export default async function generateBountyCards(issue, repoName = "") {
 
   const card = await nodeHtmlToImage({
     html,
-    output: `./${issue?.githubId || "teste"}.png`,
     content,
     type: "jpeg",
   });

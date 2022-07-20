@@ -6,20 +6,12 @@ const { CHAIN_RPC: web3Host, CHAIN_PRIVATE_KEY: privateKey } = process.env;
 export default class DAOService {
   _web3Connection;
   _network;
-  _networkAux;
-  _registry;
 
   get web3Connection() {
     return this._web3Connection;
   }
   get network() {
     return this._network;
-  }
-  get networkAux() {
-    return this._networkAux;
-  }
-  get registry() {
-    return this._registry;
   }
 
   constructor() {

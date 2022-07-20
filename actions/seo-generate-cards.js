@@ -1,3 +1,4 @@
+import { subMinutes } from "date-fns";
 import { Op } from "sequelize";
 import db from "../db/index.js";
 import generateCard from "../modules/generate-bounty-cards.js";
@@ -15,7 +16,7 @@ export async function action() {
   const where = {
     [Op.or]: [
       { seoImage: null },
-      // { updatedAt: { [Op.gte]: subMinutes(+new Date(), 30) } },
+      { updatedAt: { [Op.gte]: subMinutes(+new Date(), 25) } },
     ],
   };
 
@@ -33,15 +34,19 @@ export async function action() {
     include,
   });
 
+  info(`Found ${issues.length} issues to generate SEO cards`);
+
   for (const issue of issues) {
     try {
       const card = await generateCard(issue);
+
       const { path } = await ipfsService.add(card);
-      console.log({ path });
+
       await issue.update({ seoImage: path });
+
+      info(`SEO card generated for issue ${issue.githubId}`);
     } catch (err) {
-      error(err);
+      error(`Error generating SEO card for issue ${issue.githubId}`, err);
     }
   }
 }
-action();

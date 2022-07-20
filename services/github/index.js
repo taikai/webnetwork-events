@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { Octokit } from "octokit";
 import * as IssueQueries from "./graphql/issue.js";
+import * as PullRequestQueries from "./graphql/pull-request.js";
 import * as RepositoryQueries from "./graphql/repository.js";
 
 const { GITHUB_TOKEN: token } = process.env;
@@ -29,4 +30,61 @@ export async function issueRemoveLabel(issueId, labelId) {
   });
 }
 
-export default { repositoryDetails, issueDetails, issueRemoveLabel };
+export async function issueClose(repo, owner, issueId) {
+  const issue = await issueDetails(repo, owner, issueId);
+
+  if (!issue) throw Error(`Issue ${issueId} not found`);
+
+  const issueGithubId = issue.repository.issue.id;
+
+  return await githubAPI(IssueQueries.Close, {
+    issueId: issueGithubId,
+  });
+}
+
+export async function pullrequestDetails(repo, owner, pullrequestId) {
+  return await githubAPI(PullRequestQueries.Details, {
+    repo,
+    owner,
+    id: +pullrequestId,
+  });
+}
+
+async function pullrequestClose(repo, owner, pullrequestId) {
+  const pullrequest = await pullrequestDetails(repo, owner, pullrequestId);
+
+  if (!pullrequest) throw Error(`Pullrequest ${pullrequestId} not found`);
+
+  const pullrequestGithubId = pullrequest.repository.pullRequest.id;
+
+  return await githubAPI(PullRequestQueries.Close, {
+    pullRequestId: pullrequestGithubId,
+  });
+}
+
+export async function mergeProposal(repo, owner, pullRequestId) {
+  const pullRequestDetails = await pullrequestDetails(
+    repo,
+    owner,
+    pullRequestId
+  );
+
+  if (!pullRequestDetails)
+    throw Error(`Pull request ${pullRequestId} not found`);
+
+  const pullRequestGithubId = pullRequestDetails.repository.pullRequest.id;
+
+  return await githubAPI(PullRequestQueries.Merge, {
+    pullRequestId: pullRequestGithubId,
+  });
+}
+
+export default {
+  repositoryDetails,
+  issueDetails,
+  issueClose,
+  issueRemoveLabel,
+  pullrequestDetails,
+  pullrequestClose,
+  mergeProposal,
+};
