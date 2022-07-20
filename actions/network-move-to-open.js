@@ -57,7 +57,6 @@ async function loadIssues(network, contract) {
       issue.state = "open";
       await issue.save();
       info(`Issue ${issue.id} moved to open`);
-      // TODO: must generate new SEO CARD;
     } catch (err) {
       error(`Error moving issue ${issue.id}: ${err.message}`);
     }

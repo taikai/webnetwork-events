@@ -75,7 +75,7 @@ export async function getBountyCreatedEvents(events, network, contract) {
 
 export async function getBountyCanceledEvents(events, network, contract) {
   const canceledBounties = [];
-  debugger;
+
   for (const event of events) {
     const { id } = event.returnValues;
     try {
@@ -109,7 +109,7 @@ export async function getBountyCanceledEvents(events, network, contract) {
 
       //TODO: must post a new twitter card;
     } catch (err) {
-      error(`Error creating bounty cid: ${cid}`, err);
+      error(`Error creating bounty id: ${id}`, err);
     }
   }
 
@@ -216,6 +216,35 @@ export async function getBountyClosedEvents(events, network, contract) {
 
   return closedBounties;
 }
-export function getBountyAmountUpdatedEvents(events, network, contract) {
-  return "getBountyAmountUpdatedEvents";
+export async function getBountyAmountUpdatedEvents(events, network, contract) {
+  const updatedBounties = [];
+
+  for (const event of events) {
+    const { id } = event.returnValues;
+
+    try {
+      const networkBounty = await contract?.network?.getBounty(id);
+
+      if (!networkBounty) return error(`Bounty id: ${id} not found`);
+
+      const bounty = await db.issues.findOne({
+        where: {
+          contractId: id,
+          issueId: networkBounty?.cid,
+          network_id: network?.id,
+        },
+      });
+
+      if (!bounty) return error(`Bounty id: ${id} not found`);
+
+      bounty.amount = networkBounty.tokenAmount;
+      await bounty.save();
+
+      updatedBounties.push(bounty);
+    } catch (err) {
+      error(`Error update amount bounty id: ${id}`, err);
+    }
+  }
+
+  return updatedBounties;
 }
