@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { Octokit } from "octokit";
+import * as CommentsQueries from "./graphql/comments.js";
 import * as IssueQueries from "./graphql/issue.js";
 import * as PullRequestQueries from "./graphql/pull-request.js";
 import * as RepositoryQueries from "./graphql/repository.js";
@@ -79,6 +80,19 @@ export async function mergeProposal(repo, owner, pullRequestId) {
   });
 }
 
+export async function createCommentOnIssue(repo, owner, issueId, comment) {
+  const issue = await issueDetails(repo, owner, issueId);
+
+  if (!issue) throw Error(`Issue ${issueId} not found`);
+
+  const issueGithubId = issue.repository.issue.id;
+
+  return await githubAPI(CommentsQueries.Create, {
+    issueOrPullRequestId: issueGithubId,
+    body: comment,
+  });
+}
+
 export default {
   repositoryDetails,
   issueDetails,
@@ -87,4 +101,5 @@ export default {
   pullrequestDetails,
   pullrequestClose,
   mergeProposal,
+  createCommentOnIssue,
 };

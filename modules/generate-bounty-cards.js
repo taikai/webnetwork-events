@@ -1,6 +1,7 @@
 import fs from "fs";
 import nodeHtmlToImage from "node-html-to-image";
 import path from "path";
+import { ghPathSplit } from "../utils/string";
 
 function image2base64(imagePathName) {
   return new Promise((resolve) => {
@@ -40,7 +41,7 @@ export default async function generateBountyCards(issue) {
     githubId: issue?.githubId,
     state: issue?.state,
     title: issue?.title,
-    repository: issue?.repository?.githubPath?.split("/")[1] || "",
+    repository: ghPathSplit(issue?.repository?.githubPath)[1] || "",
     amount: new Intl.NumberFormat("en").format(issue?.amount || 0),
     working: issue?.working?.length || 0,
     proposals: issue?.merge_proposals?.length || 0,
